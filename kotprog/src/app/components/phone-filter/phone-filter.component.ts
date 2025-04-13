@@ -1,48 +1,62 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Phone } from '../../models/phone.interface';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CommonModule, NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+
+interface FilterCriteria {
+  brand: string;
+  maxPrice: number;
+  onlyInStock: boolean;
+}
 
 @Component({
   selector: 'app-phone-filter',
   templateUrl: './phone-filter.component.html',
-  styleUrls: ['./phone-filter.component.css']
+  styleUrls: ['./phone-filter.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgFor,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatCheckboxModule,
+    MatButtonModule
+  ]
 })
-export class PhoneFilterComponent implements OnChanges {
-  @Input() allPhones: Phone[] = [];
-  @Output() filterApplied = new EventEmitter<Phone[]>();
+export class PhoneFilterComponent implements OnInit {
+  @Output() filterChange = new EventEmitter<FilterCriteria>();
   
-  brands: string[] = [];
+  brands: string[] = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi'];
   selectedBrand: string = '';
   priceRange: number = 2000;
   onlyInStock: boolean = false;
-  
-  ngOnChanges() {
-    // Extract unique brands
-    this.brands = [...new Set(this.allPhones.map(phone => phone.brand))];
+
+  ngOnInit(): void {
+    // Initialize with default filters
+    this.applyFilters();
   }
-  
-  applyFilters() {
-    let filteredPhones = [...this.allPhones];
-    
-    // Filter by brand
-    if (this.selectedBrand) {
-      filteredPhones = filteredPhones.filter(phone => phone.brand === this.selectedBrand);
-    }
-    
-    // Filter by price
-    filteredPhones = filteredPhones.filter(phone => phone.price <= this.priceRange);
-    
-    // Filter by stock
-    if (this.onlyInStock) {
-      filteredPhones = filteredPhones.filter(phone => phone.inStock);
-    }
-    
-    this.filterApplied.emit(filteredPhones);
+
+  applyFilters(): void {
+    const filters: FilterCriteria = {
+      brand: this.selectedBrand,
+      maxPrice: this.priceRange,
+      onlyInStock: this.onlyInStock
+    };
+    this.filterChange.emit(filters);
   }
-  
-  resetFilters() {
+
+  resetFilters(): void {
     this.selectedBrand = '';
     this.priceRange = 2000;
     this.onlyInStock = false;
-    this.filterApplied.emit([...this.allPhones]);
+    this.applyFilters();
   }
 }

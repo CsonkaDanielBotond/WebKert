@@ -1,6 +1,6 @@
 <div class="phone-container">
     <div class="filter-section">
-      <app-phone-filter [allPhones]="phones" (filterApplied)="applyFilter($event)"></app-phone-filter>
+      <app-phone-filter (filterChange)="applyFilters($event)"></app-phone-filter>
     </div>
     
     <div class="phone-list">
@@ -8,7 +8,7 @@
       <mat-divider></mat-divider>
       
       <div class="phone-grid">
-        <mat-card *ngFor="let phone of phones" 
+        <mat-card *ngFor="let phone of filteredPhones" 
                   class="phone-card" 
                   [ngClass]="{'out-of-stock': !phone.inStock}"
                   (click)="selectPhone(phone)">

@@ -1,10 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
+
 import { Phone } from '../../models/phone.interface';
+import { PhoneFilterComponent } from '../phone-filter/phone-filter.component';
+import { PhoneDetailComponent } from '../phone-detail/phone-detail.component';
+import { OrderFormComponent } from '../order-form/order-form.component';
+import { ReviewComponent } from '../review/review.component';
+import { PriceFormatPipe } from '../../pipes/price-format.pipe';
 
 @Component({
   selector: 'app-phone-list',
   templateUrl: './phone-list.component.html',
-  styleUrls: ['./phone-list.component.css']
+  styleUrls: ['./phone-list.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatButtonModule,
+    PhoneFilterComponent,
+    PhoneDetailComponent,
+    OrderFormComponent,
+    ReviewComponent,
+    NgClass,
+    NgFor,
+    NgIf,
+    PriceFormatPipe
+  ]
 })
 export class PhoneListComponent implements OnInit {
   phones: Phone[] = [
@@ -100,18 +127,38 @@ export class PhoneListComponent implements OnInit {
     }
   ];
 
+  filteredPhones: Phone[] = [];
   selectedPhone: Phone | null = null;
 
   constructor() { }
 
   ngOnInit(): void {
+    // Initialize filteredPhones with all phones
+    this.filteredPhones = [...this.phones];
   }
 
   selectPhone(phone: Phone): void {
     this.selectedPhone = phone;
   }
 
-  applyFilter(filteredPhones: Phone[]): void {
-    this.phones = filteredPhones;
+  applyFilters(filterCriteria: any): void {
+    this.filteredPhones = this.phones.filter(phone => {
+      // Apply brand filter if selected
+      if (filterCriteria.brand && phone.brand !== filterCriteria.brand) {
+        return false;
+      }
+      
+      // Apply price filter
+      if (phone.price > filterCriteria.maxPrice) {
+        return false;
+      }
+      
+      // Apply in-stock filter
+      if (filterCriteria.onlyInStock && !phone.inStock) {
+        return false;
+      }
+      
+      return true;
+    });
   }
 }

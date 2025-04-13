@@ -1,29 +1,67 @@
 <div class="review-container">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Customer Reviews</mat-card-title>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <div class="review-list">
-          <div *ngIf="displayedReviews.length === 0" class="no-reviews">
-            <p>No reviews yet for this phone.</p>
-          </div>
-          
-          <div *ngFor="let review of displayedReviews" class="review-item">
-            <div class="review-header">
-              <h4>{{ review.customerName }}</h4>
-              <div class="rating">
-                <mat-icon *ngFor="let star of getStars(review.rating)" color="accent">star</mat-icon>
-                <mat-icon *ngFor="let star of getEmptyStars(review.rating)">star_border</mat-icon>
-              </div>
-              <span class="review-date">{{ review.reviewDate | date:'mediumDate' }}</span>
-            </div>
-            <p class="review-comment">{{ review.comment }}</p>
-            <mat-divider></mat-divider>
-          </div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Customer Reviews</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="review-list">
+        <div *ngIf="displayedReviews.length === 0" class="no-reviews">
+          <p>No reviews yet for this phone.</p>
         </div>
         
-        <div class="add-review">
-          <h3>Add Your Review</h3>
-          <form [formGroup]="reviewForm" (
+        <div *ngFor="let review of displayedReviews" class="review-item">
+          <div class="review-header">
+            <h4>{{ review.customerName }}</h4>
+            <div class="rating">
+              <mat-icon *ngFor="let star of getStars(review.rating)" color="accent">star</mat-icon>
+              <mat-icon *ngFor="let star of getEmptyStars(review.rating)">star_border</mat-icon>
+            </div>
+            <span class="review-date">{{ review.reviewDate | date:'mediumDate' }}</span>
+          </div>
+          <p class="review-comment">{{ review.comment }}</p>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+      
+      <div class="add-review">
+        <h3>Add Your Review</h3>
+        <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+          <mat-form-field appearance="fill">
+            <mat-label>Your Name</mat-label>
+            <input matInput formControlName="customerName">
+            <mat-error *ngIf="reviewForm.get('customerName')?.hasError('required')">
+              Name is required
+            </mat-error>
+            <mat-error *ngIf="reviewForm.get('customerName')?.hasError('minlength')">
+              Name must be at least 3 characters
+            </mat-error>
+          </mat-form-field>
+          
+          <div class="rating-input">
+            <mat-label>Rating</mat-label>
+            <mat-slider min="1" max="5" step="1" formControlName="rating" discrete>
+              <input matSliderThumb>
+            </mat-slider>
+            <span>{{ reviewForm.get('rating')?.value }} / 5</span>
+          </div>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Your Review</mat-label>
+            <textarea matInput formControlName="comment" rows="4"></textarea>
+            <mat-error *ngIf="reviewForm.get('comment')?.hasError('required')">
+              Review comment is required
+            </mat-error>
+            <mat-error *ngIf="reviewForm.get('comment')?.hasError('minlength')">
+              Review must be at least 10 characters
+            </mat-error>
+          </mat-form-field>
+          
+          <button mat-raised-button color="primary" type="submit" [disabled]="reviewForm.invalid">
+            Submit Review
+          </button>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
