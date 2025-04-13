@@ -18,3 +18,7 @@ html, body {
       padding: 12px !important;
     }
   }
+
+  .mat-mdc-card {
+    background-color: blueviolet;
+  }
