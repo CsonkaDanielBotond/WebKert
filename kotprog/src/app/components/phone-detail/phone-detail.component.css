@@ -1,0 +1,14 @@
+.detail-container {
+    margin-top: 20px;
+  }
+  
+  .specs-container {
+    margin-top: 10px;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .detail-container {
+      padding: 0;
+    }
+  }

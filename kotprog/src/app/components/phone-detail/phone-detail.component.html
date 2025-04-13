@@ -1,0 +1,72 @@
+<div *ngIf="phone" class="detail-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ phone.brand }} {{ phone.model }}</mat-card-title>
+        <mat-card-subtitle>{{ phone.releaseYear }}</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="specs-container">
+          <h3>Specifications</h3>
+          
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Price</span>
+              <span matListItemLine>{{ phone.price | priceFormat }}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Display</span>
+              <span matListItemLine>{{ phone.specs.screenSize }}" - {{ phone.specs.resolution }}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Processor</span>
+              <span matListItemLine>{{ phone.specs.processor }}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Memory</span>
+              <span matListItemLine>{{ phone.specs.ram }}GB RAM, {{ phone.specs.storage }}GB Storage</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Camera</span>
+              <span matListItemLine>{{ phone.specs.camera }}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Battery</span>
+              <span matListItemLine>{{ phone.specs.battery }}mAh</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Color</span>
+              <span matListItemLine>{{ phone.color }}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span matListItemTitle>Availability</span>
+              <span matListItemLine [ngStyle]="{'color': phone.inStock ? 'green' : 'red'}">
+                {{ phone.inStock ? 'In Stock' : 'Out of Stock' }}
+              </span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>

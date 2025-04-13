@@ -1,0 +1,36 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Filter Phones</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="filter-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Brand</mat-label>
+          <mat-select [(ngModel)]="selectedBrand">
+            <mat-option value="">All Brands</mat-option>
+            <mat-option *ngFor="let brand of brands" [value]="brand">{{ brand }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <div class="price-filter">
+          <label>Price Range: $0 - ${{ priceRange }}</label>
+          <mat-slider 
+            min="0" 
+            max="2000" 
+            step="100" 
+            [(ngModel)]="priceRange"
+            discrete>
+            <input matSliderThumb>
+          </mat-slider>
+        </div>
+        
+        <mat-checkbox [(ngModel)]="onlyInStock">Show only in stock</mat-checkbox>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="applyFilters()">Apply Filters</button>
+      <button mat-button (click)="resetFilters()">Reset</button>
+    </mat-card-actions>
+  </mat-card>

@@ -1,0 +1,16 @@
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .price-filter {
+    width: 100%;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    mat-form-field {
+      width: 100%;
+    }
+  }
